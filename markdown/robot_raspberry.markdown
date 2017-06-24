@@ -67,22 +67,22 @@ La lista del materiale occorrente prevede:
 
 -   Una batteria lipo da 7,4V per Arduino / Motori e un Powerbank da 5V per Raspberry, ricordando di collegare la massa (GND) del Raspberry a quella di Arduino.
 
-Per avere un’idea del funzionamento generale del del robot, basta fare riferimento allo schema in Figura [fig:Schema-di-funzionamento]
+Per avere un’idea del funzionamento generale del del robot, basta fare riferimento al seguente schema:
 
-![[fig:Schema-di-funzionamento]Schema di funzionamento della prima versione del robot](01.jpg)
+![image](03.jpg)
 
-Tale schema è intuitivo: la webcam è collegata ad una porta USB di Raspberry, Arduino al GPIO del raspi e i motori al modulo L298N che a sua volta sarà collegato ad Arduino. Il motivo per cui non si collega il modulo direttamente al GPIO, è dovuto al fatto che Raspberry non è un sistema realtime (a meno che non si faccia uso di schede aggiuntive): ciò lo rende instabile di fronte a task che devono essere eseguiti e terminati in intervalli di tempo limitati. Infatti, può succedere che il sistema operativo dia maggiore priorità a processi che non riguardano la gestione dei motori, causando una risposta ritardata ai comandi ricevuti (per esempio, il robot potrebbe sterzare in ritardo). Arduino fa da tramite riducendo le operazioni da eseguire, quindi raspberry dovrà limitarsi ad inviare i comandi sulla porta seriale, al resto ci pensa il microcontrollore. Delegando la gestione degli attuatori, si risolve il problema dell’instabilità, dovuta all’impiego di un sistema che non sia realtime. Altre alternative (già pronte) sono le schede HAT, fatte appositamente per permettere a Raspberry di supportare Servo e Motori CC senza problemi, purtroppo tali schede non sono a disposizione dell’autore. Andiamo a vedere nel dettaglio come saranno effettuati i collegamenti di Arduino al modulo L298N.
+la webcam è collegata ad una porta USB di Raspberry, Arduino al GPIO del raspi e i motori al modulo L298N che a sua volta sarà collegato ad Arduino. Il motivo per cui non si collega il modulo direttamente al GPIO, è dovuto al fatto che Raspberry non è un sistema realtime (a meno che non si faccia uso di schede aggiuntive): ciò lo rende instabile di fronte a task che devono essere eseguiti e terminati in intervalli di tempo limitati. Infatti, può succedere che il sistema operativo dia maggiore priorità a processi che non riguardano la gestione dei motori, causando una risposta ritardata ai comandi ricevuti (per esempio, il robot potrebbe sterzare in ritardo). Arduino fa da tramite riducendo le operazioni da eseguire, quindi raspberry dovrà limitarsi ad inviare i comandi sulla porta seriale, al resto ci pensa il microcontrollore. Delegando la gestione degli attuatori, si risolve il problema dell’instabilità, dovuta all’impiego di un sistema che non sia realtime. Altre alternative (già pronte) sono le schede HAT, fatte appositamente per permettere a Raspberry di supportare Servo e Motori CC senza problemi, purtroppo tali schede non sono a disposizione dell’autore. Andiamo a vedere nel dettaglio come saranno effettuati i collegamenti di Arduino al modulo L298N.
 
 Collegamento motori
 -------------------
 
-La prima componente da assemblare è la parte relativa ad Arduino e i Motori CC (la parte più a destra dello schema in Figura [fig:Schema-di-funzionamento]), seguito dalla realizzazione di un semplice sketch. Prima di procedere, diamo un’occhiata alle caratteristiche del modulo motori.
+La prima componente da assemblare è la parte relativa ad Arduino e i Motori CC, seguito dalla realizzazione di un semplice sketch. Prima di procedere, diamo un’occhiata alle caratteristiche del modulo motori.
 
-![image](03.jpg)
+![image](04.jpg)
 
 ### Il modulo L298N
 
-Il modulo L298N (figura [fig:Il-modulo-L298N]), detto anche H-Bridge, è un modulo utilizzabile per la gestione dei motori a corrente continua. Esso è composto da un ingresso a 12 Volt, due uscite a 3 V per i motori, e un’uscita a 5 Volt per alimentare la scheda di controllo. Purtroppo, quest’ultima, non può essere utilizzata per alimentare Raspberry (l’amperaggio fornito è insufficiente) ma va benissimo per Arduino. Tuttavia, non sarà utilizzata per le fasi di test, infatti ad Arduino collegheremo solo la massa (GND) ma non l’alimentazione, in quanto il microcontrollore sarà alimentato dalla stessa porta USB del PC. Gli ingressi per la gestione dei motorini sono:
+Il modulo L298N (figura sopra), detto anche H-Bridge, è un modulo utilizzabile per la gestione dei motori a corrente continua. Esso è composto da un ingresso a 12 Volt, due uscite a 3 V per i motori, e un’uscita a 5 Volt per alimentare la scheda di controllo. Purtroppo, quest’ultima, non può essere utilizzata per alimentare Raspberry (l’amperaggio fornito è insufficiente) ma va benissimo per Arduino. Tuttavia, non sarà utilizzata per le fasi di test, infatti ad Arduino collegheremo solo la massa (GND) ma non l’alimentazione, in quanto il microcontrollore sarà alimentato dalla stessa porta USB del PC. Gli ingressi per la gestione dei motorini sono:
 
 -   Enable Motor A (ENA): E’ l’ingresso utilizzato per impostare il PWM del motore A, quindi anche la sua velocità. Se messo in corto con il pin superiore (5V+), la velocità rimarrà constante (al valore massimo). Diversamente, possiamo regolare gli impulsi da Arduino e farla variare (sfruttando il [Duty Cycle](https://it.wikipedia.org/wiki/Duty_cycle));
 
@@ -97,7 +97,7 @@ Il modulo L298N (figura [fig:Il-modulo-L298N]), detto anche H-Bridge, è un modu
 | ruota in senso antiorario | low |    high |
     
 
-![image](04.jpg)
+![image](05.jpg)
 
 ### Montaggio e sketch
 
@@ -113,7 +113,7 @@ I collegamenti da effettuare tra i pin di Arduino e quelli del H-Bridge sono des
 | D5 | IN3 |
 | D4 | IN4 |
 
-In Figura [fig:Collegamento-di-Arduino] possiamo vedere lo schema completo. Il motore cc utilizzato è il Mabuchi FA130 a 3V (spesso presente nei giocattoli elettrici, come trenini e macchine da pista polistil), ma il modulo ne supporta anche altri tipi. Montato il circuito, possiamo pensare all’implementazione dello sketch di Arduino.
+Nell'immagine sopra, possiamo vedere lo schema completo. Il motore cc utilizzato è il Mabuchi FA130 a 3V (spesso presente nei giocattoli elettrici, come trenini e macchine da pista polistil), ma il modulo ne supporta anche altri tipi. Montato il circuito, possiamo pensare all’implementazione dello sketch di Arduino.
 
 Le funzioni che utilizzeremo sono *analogWrite()* per impostare il valore di ENA e quello di ENB, mentre *digitalWrite()* lo utilizzeremo per inviare i valori *HIGH* e *LOW* agli altri pin.
 
@@ -277,7 +277,7 @@ Il codice seguente è lo sketch da caricare in Arduino.
        analogWrite(enB, 0);
     } 
 
-Il funzionamento del programma è relativamente semplice: i comandi sono semplici caratteri ricevuti sulla porta seriale e, in base al byte ricevuto, viene richiamata una funzione corrispondente ad un’azione da eseguire (*forward, reverse, turnLeft, turnRight, stop e straight*). I comandi possono essere riassunti in Tabella [tab:Comandi-da-inviare].
+Il funzionamento del programma è relativamente semplice: i comandi sono semplici caratteri ricevuti sulla porta seriale e, in base al byte ricevuto, viene richiamata una funzione corrispondente ad un’azione da eseguire (*forward, reverse, turnLeft, turnRight, stop e straight*). I comandi possono essere riassunti nella seguente tabella:
 
 
 | COMANDO    |      AZIONE |
@@ -299,13 +299,13 @@ Per verificare se abbiamo fatto tutto correttamente, possiamo collegare Arduino 
 Collegare il Raspberry
 ----------------------
 
-Per collegare il Raspberry, abbiamo bisogno di un convertitore dei livelli di tensione (Figura [fig:Elenco-Pin-Raspi], in alto a destra), in particolare sul pin di ricezione del raspi (UART\_RXD). L’elenco dei Pin è visibile in Figura [fig:Elenco-Pin-Raspi].
+Per collegare il Raspberry, abbiamo bisogno di un convertitore dei livelli di tensione (schema successivo, in alto a destra), in particolare sul pin di ricezione del raspi (UART\_RXD). L’elenco dei Pin è visibile sotto.
 
-![image](05.jpg)
+![image](06.jpg)
 
 Il collegamento da realizzare è di tipo UART: consiste nel collegare il Pin TX di Arduino al Pin UART\_RXD di Raspberry, e il pin UART\_TXD al pin RX di Arduino come mostrato in figura [fig:Collegamento-seriale-Raspberry], facendo riferimento ai pin in Tabella [tab:Collegamenti-tra-Raspberry]. Il metodo è molto simile a quello della costruzione di un cavo null modem, ma le controparti hanno livelli di tensione differenti (Arduino lavora a 5V, mentre Raspberry a 3,3).
 
-![image](06.jpg)
+![image](07.jpg)
 
 
 | PIN ARDUINO  | CONVERTER HV | CONVERTER LV | PIN RASPI |
@@ -316,9 +316,9 @@ Il collegamento da realizzare è di tipo UART: consiste nel collegare il Pin TX 
 | 5V | HV | LV | 3,3V |
 
 
-Collegato il raspberry, non resta che collegare anche il pin vin di Arduino al pin 5V del modulo L298N (staccate arduino dalla usb del pc), come mostrato in figura [fig:il circuito nel complesso]. Per alimentare raspberry, possiamo usare un alimentatore da smartphone (purchè sia a 5V), almeno per le fasi di test. Successivamente, si farà uso di un modulo dc step down: si prenderà parte della tensione globale del sistema, e la si ridurrà a 5 V per Raspberry. In questo modo, avremo due diramazioni a partire dalla sorgente a 12V: una a 5V per Raspberry e l’altra a 12 per alimentare il modulo motori (insieme al microcontrollore). L’importante è che fate arrivare almeno 9V (meglio 12) e 2400mAh in ingresso.
+Collegato il raspberry, non resta che collegare anche il pin vin di Arduino al pin 5V del modulo L298N (staccate arduino dalla usb del pc), come mostrato nello schema successivo. Per alimentare raspberry, possiamo usare un alimentatore da smartphone (purchè sia a 5V), almeno per le fasi di test. Successivamente, si farà uso di un modulo dc step down: si prenderà parte della tensione globale del sistema, e la si ridurrà a 5 V per Raspberry. In questo modo, avremo due diramazioni a partire dalla sorgente a 12V: una a 5V per Raspberry e l’altra a 12 per alimentare il modulo motori (insieme al microcontrollore). L’importante è che fate arrivare almeno 9V (meglio 12) e 2400mAh in ingresso.
 
-![image](07.jpg)
+![image](08.jpg)
 
 Prima configurazione e test del collegamento
 --------------------------------------------
