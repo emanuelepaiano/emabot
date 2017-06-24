@@ -1,7 +1,7 @@
 Licenza
 =======
 
-L’autore declina ogni responsabilità relativa alle eventuali conseguenze (hardware danneggiato o altro) delle informazioni contenute nel presente articolo. E’ consentita la stampa, diffusione e riproduzione del testo integrale, purchè venga citata la fonte e l’autore. I sorgenti del progetto sono coperti dai termini della licenza GNU-GPL3 e possono essere riutilizzati per altri progetti non commerciali. Per eventuali chiarimenti potete contattare l’autore all’indirizzo nixw0rm@gmail.com.
+L’autore declina ogni responsabilità relativa alle eventuali conseguenze (hardware danneggiato o altro) delle informazioni contenute nel presente articolo. E’ consentita la stampa, diffusione e riproduzione del testo integrale, purchè venga citato l’autore. I sorgenti del progetto sono coperti dai termini della licenza GNU-GPL3.
 
 Introduzione
 ============
@@ -357,3 +357,8 @@ Siamo partiti dal collegare i motori al modulo L298N. Abbiamo realizzato uno ske
 A questo punto, possiamo pensare alla parte applicativa: l’idea è quella di scrivere un insieme di librerie e classi in un linguaggio che, agendo sul file /dev/ttyAMA0, gestisca i servo della cam e i motori di marcia. Si potrebbe pensare di scrivere una classe per ogni sensore e attuatore, in modo tale da arrivare a programmare il robot in stile oop, arrivando anche ad implementare un server tcp in qualunque linguaggio. L’obiettivo finale di questo progetto, è quello di arrivare a ricevere i caratteri ascii direttamente da un client remoto.
 
 I comandi saranno inviati da un’apposita app Android, configurata per pilotare il robot via wlan. Su Google Play alcune sono gratuite e con supporto streaming da cam: una app che fa a caso nostro, può essere [WIFI TCP/UDP Controller](https://play.google.com/store/apps/details?id=udpcontroller.nomal&hl=it).
+
+ LINKS e SORGENTI
+------------------------
+ [Repository](https://github.com/emanuelepaiano/emabot/)
+ [Versione PDF](https://github.com/emanuelepaiano/emabot/blob/master/Emabot_ITA_part%201.pdf)
