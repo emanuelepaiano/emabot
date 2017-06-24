@@ -10,7 +10,7 @@ Con l’evoluzione delle varie board di sviluppo e dei sistemi embedded, oggi è
 
 Intuitivamente, possiamo paragonare un semplice robot mobile ad un piccolo computer dotato di sensori e attuatori: i primi sono dispositivi di input in grado di percepire lo stato dell’ambiente, mentre i secondi possiamo considerarli dei dispositivi di output che modificano tale stato (compresa la posizione del robot), in base a delle istruzioni contenute in memoria.
 
-![image](robot)
+![image](01.jpg)
 
 Prendendo spunto da una mia esperienza personale, in questa serie di articoli vedremo come realizzarne uno, equipaggiato con:
 
@@ -38,7 +38,7 @@ All’eventuale domanda sul perchè non ci si limita ad Arduino, la risposta met
 
 Implementare tali caratteristiche con un microcontrollore, appare molto più complesso. Il prezzo da pagare si riversa sui consumi energetici che saranno decisamente maggiori.
 
-![image](image3004)
+![image](02.jpg)
 
 Una prima versione: un Raspberry con le ruote
 ---------------------------------------------
@@ -78,7 +78,7 @@ Collegamento motori
 
 La prima componente da assemblare è la parte relativa ad Arduino e i Motori CC (la parte più a destra dello schema in Figura [fig:Schema-di-funzionamento]), seguito dalla realizzazione di un semplice sketch. Prima di procedere, diamo un’occhiata alle caratteristiche del modulo motori.
 
-![image](Dual-H-Bridge-DC-Stepper-Motor-Drive-Controller-Board-Module-Arduino-L298N-HE2)
+![image](03.jpg)
 
 ### Il modulo L298N
 
@@ -97,7 +97,7 @@ Il modulo L298N (figura [fig:Il-modulo-L298N]), detto anche H-Bridge, è un modu
 | ruota in senso antiorario | low |    high |
     
 
-![image](L298N_small)
+![image](04.jpg)
 
 ### Montaggio e sketch
 
@@ -301,11 +301,11 @@ Collegare il Raspberry
 
 Per collegare il Raspberry, abbiamo bisogno di un convertitore dei livelli di tensione (Figura [fig:Elenco-Pin-Raspi], in alto a destra), in particolare sul pin di ricezione del raspi (UART\_RXD). L’elenco dei Pin è visibile in Figura [fig:Elenco-Pin-Raspi].
 
-![image](PinoutRaspberry-2)
+![image](05.jpg)
 
 Il collegamento da realizzare è di tipo UART: consiste nel collegare il Pin TX di Arduino al Pin UART\_RXD di Raspberry, e il pin UART\_TXD al pin RX di Arduino come mostrato in figura [fig:Collegamento-seriale-Raspberry], facendo riferimento ai pin in Tabella [tab:Collegamenti-tra-Raspberry]. Il metodo è molto simile a quello della costruzione di un cavo null modem, ma le controparti hanno livelli di tensione differenti (Arduino lavora a 5V, mentre Raspberry a 3,3).
 
-![image](Raspi2Arduino_bb)
+![image](06.jpg)
 
 
 | PIN ARDUINO  | CONVERTER HV | CONVERTER LV | PIN RASPI |
@@ -318,7 +318,7 @@ Il collegamento da realizzare è di tipo UART: consiste nel collegare il Pin TX 
 
 Collegato il raspberry, non resta che collegare anche il pin vin di Arduino al pin 5V del modulo L298N (staccate arduino dalla usb del pc), come mostrato in figura [fig:il circuito nel complesso]. Per alimentare raspberry, possiamo usare un alimentatore da smartphone (purchè sia a 5V), almeno per le fasi di test. Successivamente, si farà uso di un modulo dc step down: si prenderà parte della tensione globale del sistema, e la si ridurrà a 5 V per Raspberry. In questo modo, avremo due diramazioni a partire dalla sorgente a 12V: una a 5V per Raspberry e l’altra a 12 per alimentare il modulo motori (insieme al microcontrollore). L’importante è che fate arrivare almeno 9V (meglio 12) e 2400mAh in ingresso.
 
-![image](EMABOT1_small)
+![image](07.jpg)
 
 Prima configurazione e test del collegamento
 --------------------------------------------
