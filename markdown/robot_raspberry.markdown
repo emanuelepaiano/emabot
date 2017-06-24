@@ -360,5 +360,6 @@ I comandi saranno inviati da un’apposita app Android, configurata per pilotare
 
  LINKS e SORGENTI
 ------------------------
- [Repository](https://github.com/emanuelepaiano/emabot/)
- [Versione PDF](https://github.com/emanuelepaiano/emabot/blob/master/Emabot_ITA_part%201.pdf)
+[Repository](https://github.com/emanuelepaiano/emabot/)
+
+[Versione PDF](https://github.com/emanuelepaiano/emabot/blob/master/Emabot_ITA_part%201.pdf)
