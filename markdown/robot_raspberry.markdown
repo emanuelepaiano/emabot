@@ -301,9 +301,9 @@ Collegare il Raspberry
 
 Per collegare il Raspberry, abbiamo bisogno di un convertitore dei livelli di tensione (schema successivo, in alto a destra), in particolare sul pin di ricezione del raspi (UART\_RXD). L’elenco dei Pin è visibile sotto.
 
-![image](06.jpg)
+![image](06.jpeg)
 
-Il collegamento da realizzare è di tipo UART: consiste nel collegare il Pin TX di Arduino al Pin UART\_RXD di Raspberry, e il pin UART\_TXD al pin RX di Arduino come mostrato in figura [fig:Collegamento-seriale-Raspberry], facendo riferimento ai pin in Tabella [tab:Collegamenti-tra-Raspberry]. Il metodo è molto simile a quello della costruzione di un cavo null modem, ma le controparti hanno livelli di tensione differenti (Arduino lavora a 5V, mentre Raspberry a 3,3).
+Il collegamento da realizzare è di tipo UART: consiste nel collegare il Pin TX di Arduino al Pin UART\_RXD di Raspberry, e il pin UART\_TXD al pin RX di Arduino come mostrato in figura sotto, facendo riferimento ai pin specificati nella tabella successiva. Il metodo è molto simile a quello della costruzione di un cavo null modem, ma le controparti hanno livelli di tensione differenti (Arduino lavora a 5V, mentre Raspberry a 3,3).
 
 ![image](07.jpg)
 
